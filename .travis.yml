@@ -2,13 +2,17 @@ sudo: false
 language: java
 jdk:
 - oraclejdk7
-branches:
-  only:
-  - master
 before_install:
 - mkdir -p ~/.m2; wget -q -O ~/.m2/settings.xml https://raw.githubusercontent.com/AtlasOfLivingAustralia/travis-build-configuration/master/travis_maven_settings.xml
-script: mvn clean install deploy
-env:
-  global:
-  - secure: HJkg5DSKeTrzES8M26K07lbDWIac1gbA58t8O9QQRYJX2FNB5xkdHMHttZQPSs7JlkH/zFC7aoarNMd3orsYCSZzrJ7AgLkskeclbSMG0DF2ba210+AyJfqOrzAJKanLznduTywN/0URG4bA9IBJeoPeewi9/NM4wqLC3PClKd0=
-  - secure: tLBwzKc1o8VzGbZSjl/rSjo753NsVE1vpTWTA5fhmuKzYYArULG6aV79Vgv2WwuOO9FClpH4w3w9yEf1fZbOYVHd+M6LzP/mbDTDTH3LAVS5/vQWO3gZQIGBG95MqWIH9FiEAUyvfIwLNlTIlW44RsZ+39qB6jqaSE4/w5hBUOU=
+script: mvn clean package
+deploy:
+  provider: releases
+  api_key:
+    secure: JmCeY+yFrThEwuqiBNFc52LEeDr/J4PltMUd79V3IziilJ1tvVcodh7v3i2T2OT3odrEzCezujk5X6h8QbRNicydi3WqpkUy9UNUBgwatOSxbQFBKdjFwgxEpt1sUEnH/LVLP5ZK44rxalXzTPaEOragc6usbmw/jJDxqT0CtbT5EBwQY4evepLHZXZdvXTVM8c1Cl3xsVyQjZKU80qEvW1+6QXYIgVmxtMsLQkCe4igzBy8PvzfT2pLawfxjXf8/Nmtep7Wlf7f95z9JDiNAoUQmvZUvcgX97a8ZkTK2UHsNmtpmAPrkyF57uX8HHgsNB9yqKgqZoFpGaD/qvFjAUC1asCZqN4rdC1XqqQSIjZezbgree6WRarnqwPOqxB85jil8PNV37VoVN+VvvrOmCm2KU0YWeD2DfLs5228OyOo1bq5JsziaVO4eqvluEqaCGGkrlBjfRMXgS/R6U6qyCyjy7N+4UNndxWuHGjqqXeDq2NrdNbnz+GsdJy6s8ZJYzmWvR/oqFMKoYEae01VROcPBDcozECA/IrLf57+ONvdKCGIg8YFY7ZcA4rG9Q7LZJ4F2UI8QGlGxNfts10RHbYlMshQYyejsKGn1ILTIQld558DwZ3AJyyfbKHjZxD9N7xMDZ1v+BC5oDbso4oYtoSa9KDN4RPXObW4e3GgrNo=
+  file_glob: true
+  file: target/layers-service*.war
+  skip_cleanup: true
+  overwrite: true
+  on:
+    repo: bioatlas/bie-index
+    all-branches: true
